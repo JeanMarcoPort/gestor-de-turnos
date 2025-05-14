@@ -8,9 +8,9 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private API_URL = 'http://localhost:3000'; // URL base del backend (ajusta según sea necesario)
+  private readonly API_URL = 'http://localhost:3000'; // URL base del backend (ajusta según sea necesario)
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private readonly http: HttpClient, private readonly router: Router) {}
 
   /**
    * Envía una solicitud de login al backend con las credenciales del usuario.
@@ -56,3 +56,5 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 }
+// Este servicio maneja la autenticación del usuario, incluyendo login, registro y gestión de tokens JWT.
+// Se encarga de enviar solicitudes al backend y almacenar el token en localStorage.

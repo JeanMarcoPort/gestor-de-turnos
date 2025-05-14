@@ -9,14 +9,13 @@ import { AuthGuard } from './guards/auth.guard';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' }, // Redirige a la página de inicio (dashboard) por defecto
 
   // Rutas públicas
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
   // Rutas protegidas con el guard
-  //Authguard es un guard que protege las rutas y verifica si el usuario está autenticado
   // Si no está autenticado, lo redirige a la página de login
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }, 
   { path: 'reservar-turno', component: ReservarTurnoComponent, canActivate: [AuthGuard] },

@@ -22,3 +22,6 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(req);
   }
 }
+
+//El auth.interceptor.ts es un interceptor de HTTP en Angular que se encarga de agregar un token de autorización a las solicitudes HTTP.
+// Este interceptor se utiliza para autenticar las solicitudes enviadas al servidor, asegurando que el token de autorización se incluya en el encabezado de la solicitud.
