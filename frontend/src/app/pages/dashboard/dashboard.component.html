@@ -1,1 +1,6 @@
-<p>dashboard works!</p>
+<full-calendar
+  [plugins]="calendarPlugins"
+  [events]="calendarEvents"
+  [initialView]="'dayGridMonth'"
+  (dateClick)="handleDateClick($event)"
+></full-calendar>
