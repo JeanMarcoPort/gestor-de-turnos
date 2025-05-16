@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root' // Este servicio estará disponible en toda la aplicación
 })

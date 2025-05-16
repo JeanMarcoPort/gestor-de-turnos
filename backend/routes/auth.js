@@ -3,12 +3,15 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
+//Importar el middleware de autenticación
+const authMiddleware = require('../middleware/auth');
+
 const SECRET_KEY = 'samuelito123';
 
 // Registro de usuario
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, is_business = false } = req.body;
+    const { name, email, password, rol_id = 2 } = req.body;
 
     // Validación básica
     if (!name || !email || !password) {
@@ -20,20 +23,21 @@ router.post('/register', async (req, res) => {
 
     // Guardar en MySQL
     const [result] = await db.execute(
-      'INSERT INTO users (name, email, password, is_business) VALUES (?, ?, ?, ?)',
-      [name, email, hashedPassword, is_business]
+      'INSERT INTO users (name, email, password, rol_id) VALUES (?, ?, ?, ?)',
+      [name, email, hashedPassword, rol_id]
     );
+
 
     // Generar JWT
     const token = jwt.sign(
-      { id: result.insertId, email, is_business },
+      { id: result.insertId, email, rol_id },
       SECRET_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: '2h' }
     );
 
     res.status(201).json({ token });
   } catch (error) {
-    if (error.code === 'ER_DUP_ENTRY') {
+    if (error.code === 'ER_DUP_ENTRY') { // Error de duplicado
       return res.status(400).json({ message: 'El email ya está registrado' });
     }
     res.status(500).json({ message: 'Error en el servidor', error: error.message });
@@ -61,9 +65,9 @@ router.post('/login', async (req, res) => {
 
     // Generar JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email, is_business: user.is_business },
+      { id: user.id, email: user.email, rol_id: user.rol_id },
       SECRET_KEY,
-      { expiresIn: '1h' }
+      { expiresIn: '2h' }
     );
 
     res.json({ token });
@@ -75,10 +79,10 @@ router.post('/login', async (req, res) => {
 // Ruta protegida de ejemplo
 router.get('/profile', authMiddleware, async (req, res) => {
   try {
-    const [users] = await db.execute('SELECT id, name, email, is_business FROM users WHERE id = ?', [req.user.id]);
+    const [users] = await db.execute('SELECT id, name, email, rol_id FROM users WHERE id = ?', [req.user.id]);
     res.json(users[0]);
   } catch (error) {
-    res.status(500).json({ message: 'Error en el servidor' });
+    res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }
 });
 

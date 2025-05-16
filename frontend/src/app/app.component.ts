@@ -7,10 +7,11 @@ import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ReservarTurnoComponent } from './pages/reservar-turno/reservar-turno.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import {FullCalendarModule} from '@fullcalendar/angular'; // for FullCalendar! Import the FullCalendar module
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoginComponent, RegisterComponent, DashboardComponent, AdministrarHorariosComponent, ReservarTurnoComponent, MisTurnosComponent, NavbarComponent],
+  imports: [RouterOutlet, LoginComponent, RegisterComponent, DashboardComponent, AdministrarHorariosComponent, ReservarTurnoComponent, MisTurnosComponent, NavbarComponent, FullCalendarModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
