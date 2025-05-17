@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.17",
+    "chart.js": "^4.4.9"
+  }
+}

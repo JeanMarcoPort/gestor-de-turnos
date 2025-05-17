@@ -1,1 +1,70 @@
-<h1>Dashboard</h1>
+<div class="container mt-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+      {{ esAdmin ? 'Panel de Administración' : 'Mis Turnos' }}
+    </h2>
+    <button (click)="authService.logout()" class="btn btn-outline-danger">
+      Cerrar Sesión
+    </button>
+  </div>
+
+  <!-- Sección de Turnos -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">{{ esAdmin ? 'Todos los Turnos' : 'Próximos Turnos' }}</h5>
+    </div>
+    <div class="card-body">
+      @if (turnos.length === 0) {
+        <div class="alert alert-info">No hay turnos registrados</div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Motivo</th>
+                @if (esAdmin) {
+                  <th>Usuario</th>
+                }
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (turno of turnos; track turno.id) {
+                <tr>
+                  <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ turno.hora_inicio }} - {{ turno.hora_fin }}</td>
+                  <td>{{ turno.motivo || 'Sin motivo' }}</td>
+                  @if (esAdmin) {
+                    <td>{{ turno.usuario_nombre }}</td>
+                  }
+                  <td>
+                    <button 
+                      (click)="cancelarTurno(turno.id)"
+                      class="btn btn-sm btn-outline-danger">
+                      Cancelar
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Sección de Horarios (Solo Admin) -->
+  @if (esAdmin) {
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h5 class="mb-0">Horarios Disponibles</h5>
+      </div>
+      <div class="card-body">
+        <!-- Implementar gestión de horarios aquí -->
+      </div>
+    </div>
+  }
+</div>

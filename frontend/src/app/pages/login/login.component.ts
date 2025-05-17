@@ -18,7 +18,7 @@ export class LoginComponent {
   errorMessage: string = '';
 
   //Añadir readonly si no se va a modificar la propiedad dentro del constructor
-  constructor(private readonly authService: AuthService, private readonly router: Router) {}
+  constructor(private readonly authService: AuthService, public readonly router: Router) {}
 
   // Envía los datos del formulario al servicio de autenticación
   onSubmit() {

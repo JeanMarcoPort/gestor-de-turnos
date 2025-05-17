@@ -41,3 +41,6 @@ export class ApiService {
 }
 // Este servicio se encarga de realizar las peticiones HTTP al backend.
 // Se utiliza para obtener, crear, actualizar y eliminar datos en el backend.
+//Cada archivo en la carpeta services tiene como función encapsular la lógica de negocio relacionada con las peticiones HTTP para
+// interactuar con el backend. Esto permite mantener el código más limpio y organizado.
+// Además, facilita la reutilización del código y la separación de responsabilidades.

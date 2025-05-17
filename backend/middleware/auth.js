@@ -1,20 +1,21 @@
-const jwt = require('jsonwebtoken'); // Importación de jwt para la creación de tokens
+const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'samuelito123';
 
 module.exports = (req, res, next) => {
-  const authHeader = req.headers['authorization']; // Obtener el token del encabezado de autorización
+  const authHeader = req.headers['authorization'];
   
   if (!authHeader) {
-    return res.status(401).json({ message: 'Token no proporcionado' }); // Si no hay token, devolver error 401
+    return res.status(401).json({ error: 'Token no proporcionado' });
   }
 
-  const token = authHeader.split(' ')[1]; // Obtener el token del encabezado de autorización
+  const token = authHeader.split(' ')[1]; // Bearer token
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY); // Verificar el token con la clave secreta
-    req.user = decoded; // Almacenar la información del usuario en la solicitud
-    next(); // Continuar con la siguiente función de middleware
-  } catch (error) {
-    return res.status(403).json({ message: 'Token inválido' }); // Si el token es inválido, devolver error 401
-  }
-} 
+    const decoded = jwt.verify(token, SECRET_KEY); // Verifica el token
+    req.user = decoded;
+    next(); // Llama al siguiente middleware o ruta
+    } catch (error) {
+      console.error('JWT verification error:', error);
+      return res.status(401).json({ error: 'Token inválido' });
+    }
+};

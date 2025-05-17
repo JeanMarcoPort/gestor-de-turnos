@@ -27,15 +27,22 @@
         />
       </div>
 
-      <button type="submit" class="btn btn-primary btn-login">Ingresar</button>
+      <button type="submit" class="btn btn-primary btn-login w-100">Ingresar</button>
 
-      <div *ngIf="errorMessage" class="error-message">
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
         {{ errorMessage }}
       </div>
 
-      <div class="register-link mt-3 text-center">
-        <p>
-          ¿No tienes una cuenta? <a routerLink="/register">Regístrate aquí</a>
+      <div class="mt-3 text-center">
+        <p class="text-muted">
+          ¿No tienes una cuenta? 
+         <span
+            class="login-link text-primary text-decoration-none"
+            (click)="router.navigate(['/register'])"
+            (keydown.enter)="router.navigate(['/register'])"
+            tabindex="0"
+            role="button"
+          >Regístrate aquí</span>
         </p>
       </div>
     </form>

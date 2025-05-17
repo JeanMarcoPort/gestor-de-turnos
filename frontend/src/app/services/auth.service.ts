@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
+
   private readonly API_URL = 'http://localhost:3000'; // URL base del backend (ajusta según sea necesario)
 
   constructor(private readonly http: HttpClient, private readonly router: Router) {}
@@ -55,6 +56,33 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  /**
+   * Obtiene el rol del usuario a partir del token JWT.
+   */
+  getUserRole(): string { //
+    const token = this.getToken();
+    if (!token) return 'user';
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.rol_id === 1 ? 'admin' : 'user';
+    } catch {
+      return 'user';
+    }
+  }
+
+  getCurrentUserId(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.id;
+    } catch {
+      return null;
+    }
   }
 }
 // Este servicio maneja la autenticación del usuario, incluyendo login, registro y gestión de tokens JWT.

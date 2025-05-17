@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
 //Importar el middleware de autenticación
-const authMiddleware = require('../middleware/auth');
+// const authMiddleware = require('../middleware/auth');
 
 const SECRET_KEY = 'samuelito123';
 
@@ -30,12 +30,12 @@ router.post('/register', async (req, res) => {
 
     // Generar JWT
     const token = jwt.sign(
-      { id: result.insertId, email, rol_id },
+      { id: result.insertId, email, rol_id }, // Incluimos rol_id en el token
       SECRET_KEY,
       { expiresIn: '2h' }
     );
 
-    res.status(201).json({ token });
+    res.status(201).json({ token }); //201 = Created
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') { // Error de duplicado
       return res.status(400).json({ message: 'El email ya está registrado' });
@@ -58,7 +58,7 @@ router.post('/login', async (req, res) => {
     const user = users[0];
 
     // Comparar contraseñas
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password); // Compara la contraseña ingresada con la almacenada
     if (!isMatch) {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
@@ -71,16 +71,6 @@ router.post('/login', async (req, res) => {
     );
 
     res.json({ token });
-  } catch (error) {
-    res.status(500).json({ message: 'Error en el servidor', error: error.message });
-  }
-});
-
-// Ruta protegida de ejemplo
-router.get('/profile', authMiddleware, async (req, res) => {
-  try {
-    const [users] = await db.execute('SELECT id, name, email, rol_id FROM users WHERE id = ?', [req.user.id]);
-    res.json(users[0]);
   } catch (error) {
     res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }
