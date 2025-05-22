@@ -1,29 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HorariosService {
-  private readonly API_URL = 'http://localhost:3000/api/horarios';
-
-  constructor(private readonly http: HttpClient) {}
-
-  getHorariosDisponibles(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/disponibles`);
-  }
-  crearHorario(horario: any): Observable<any> {
-    return this.http.post(`${this.API_URL}/crear`, horario);
-  }
-  actualizarHorario(id: number, horario: any): Observable<any> {
-    return this.http.put(`${this.API_URL}/actualizar/${id}`, horario);
-  }
   eliminarHorario(id: number): Observable<any> {
-    return this.http.delete(`${this.API_URL}/eliminar/${id}`);
+  return this.api.delete(`horarios/${id}`);
+}
+
+  constructor(private api: ApiService) {}
+
+  getHorariosDisponibles(fecha: string): Observable<any[]> {
+    return this.api.get<any[]>(`horarios?fecha=${fecha}`);
   }
-  obtenerHorarioPorId(id: number): Observable<any> {
-    return this.http.get(`${this.API_URL}/horario/${id}`);
+
+  crearHorario(horarioData: { fecha: string; hora_inicio: string; hora_fin: string }): Observable<any> {
+    return this.api.post('horarios', horarioData);
   }
-  obtenerHorariosPorUsuario(usuarioId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/usuario/${usuarioId}`);
+
+  getHorariosNegocio(): Observable<any[]> {
+    return this.api.get<any[]>('horarios/negocio');
+  }
+
+  actualizarDisponibilidad(id_horario: number, disponible: boolean): Observable<any> {
+    return this.api.put(`horarios/${id_horario}/disponibilidad`, { disponible });
   }
 }

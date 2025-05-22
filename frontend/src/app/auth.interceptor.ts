@@ -1,27 +1,93 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpRequest, HttpHandlerFn } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+/* --- AuthService --- */
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private readonly API_URL = 'http://localhost:3000/auth';
+  private readonly TOKEN_KEY = 'token'; // Coincide con tu interceptor
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Obtener el token desde localStorage
-    const token = localStorage.getItem('token');
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router
+  ) {}
 
-    // Si hay token, clonamos la petición y le agregamos el encabezado Authorization
-    if (token) {
-      const authReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${token}`)
-      });
+  // Login del usuario
+  login(credentials: { email: string; password: string }): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.API_URL}/login`, credentials).pipe(
+      tap(response => {
+        this.saveToken(response.token);
+      })
+    );
+  }
 
-      return next.handle(authReq); // Continuar con la petición modificada
+  // Registro de nuevo usuario
+  register(userData: { name: string; email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.API_URL}/register`, { ...userData, rol_id: 2 });
+  }
+
+  // Guarda el token en localStorage
+  private saveToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  // Cierra la sesión eliminando el token
+  logout(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    this.router.navigate(['/login']);
+  }
+
+  // Verifica si existe un token
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  // Obtiene datos básicos del usuario desde el token
+  getUserData(): { id: number; email: string; rol_id: number } | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return {
+        id: payload.id,
+        email: payload.email,
+        rol_id: payload.rol_id
+      };
+    } catch (e) {
+      console.error('Error parsing token', e);
+      return null;
     }
+  }
 
-    // Si no hay token, continuar con la petición original
-    return next.handle(req);
+  // Métodos rápidos
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  getUserId(): number | null {
+    return this.getUserData()?.id || null;
+  }
+
+  getUserRole(): 'admin' | 'user' {
+    return this.getUserData()?.rol_id === 1 ? 'admin' : 'user';
   }
 }
 
-//El auth.interceptor.ts es un interceptor de HTTP en Angular que se encarga de agregar un token de autorización a las solicitudes HTTP.
-// Este interceptor se utiliza para autenticar las solicitudes enviadas al servidor, asegurando que el token de autorización se incluya en el encabezado de la solicitud.
+/* --- authInterceptor function --- */
+import { inject } from '@angular/core';
+
+export const authInterceptor = (req: HttpRequest<any>, next: HttpHandlerFn) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    const cloned = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return next(cloned);
+  }
+  return next(req);
+};

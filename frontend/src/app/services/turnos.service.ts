@@ -1,36 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TurnosService {
-  private readonly API_URL = 'http://localhost:3000/turnos';
+ getTurnos(): Observable<any[]> {
+  return this.api.get<any[]>('turnos');
+}
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly api: ApiService) {}
 
-  getTurnos(): Observable<any[]> {
-    return this.http.get<any[]>(this.API_URL); // Asegúrate de proteger esta ruta en el backend
-  }
-
-  cambiarEstadoTurno(id: number, nuevoEstado: string): Observable<any> {
-    return this.http.patch(`${this.API_URL}/${id}`, { estado: nuevoEstado });
+  reservarTurno(turnoData: { id_horario: number; motivo?: string }): Observable<any> {
+    return this.api.post('turnos', turnoData);
   }
 
-  cancelarTurno(id: number): Observable<any> {
-    return this.http.delete(`${this.API_URL}/${id}`);
+  getTurnosUsuario(): Observable<any[]> {
+    return this.api.get<any[]>('turnos');
   }
 
-  agregarTurno(turno: any): Observable<any> {
-    return this.http.post(this.API_URL, turno);
+  cambiarEstado(id_turno: number, estado: string): Observable<any> {
+    return this.api.put(`turnos/${id_turno}/estado`, { estado });
   }
-  actualizarTurno(id: number, turno: any): Observable<any> {
-    return this.http.put(`${this.API_URL}/${id}`, turno);
+
+  cancelarTurno(id_turno: number): Observable<any> {
+    return this.api.delete(`turnos/${id_turno}`);
   }
-  getTurnoPorId(id: number): Observable<any> {
-    return this.http.get(`${this.API_URL}/${id}`);
-  } 
-  getTurnosPorUsuario(usuarioId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API_URL}/usuario/${usuarioId}`);
-  }
-  
 }

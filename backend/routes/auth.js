@@ -6,7 +6,7 @@ const db = require('../db');
 //Importar el middleware de autenticación
 // const authMiddleware = require('../middleware/auth');
 
-const SECRET_KEY = 'samuelito123';
+const SECRET_KEY = 'negocio123'; // Cambiar esto por una clave secreta más segura en producción
 
 // Registro de usuario
 router.post('/register', async (req, res) => {

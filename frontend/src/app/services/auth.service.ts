@@ -1,89 +1,95 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
-
-@Injectable({
-  providedIn: 'root' // Este servicio estará disponible en toda la aplicación
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly API_URL = 'http://localhost:3000/auth';
+  private readonly TOKEN_KEY = 'auth_token';
 
-
-  private readonly API_URL = 'http://localhost:3000'; // URL base del backend (ajusta según sea necesario)
-
-  constructor(private readonly http: HttpClient, private readonly router: Router) {}
-
-  /**
-   * Envía una solicitud de login al backend con las credenciales del usuario.
-   */
-  login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.API_URL}/auth/login`, credentials);
-  }
-
-  /**
-   * Envía una solicitud para registrar un nuevo usuario.
-   */
-  register(userData: { name: string; email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.API_URL}/auth/register`, userData);
-  }
-
-  /**
-   * Guarda el token JWT en localStorage.
-   */
-  saveToken(token: string): void {
-    localStorage.setItem('token', token);
-  }
-
-  /**
-   * Obtiene el token JWT desde localStorage.
-   */
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  /**
-   * Verifica si el usuario está logueado.
-   * Retorna true si existe un token en localStorage.
-   */
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-  }
-
-  /**
-   * Elimina el token y redirige al login (cierra sesión).
-   */
-  logout(): void {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
-  }
-
-  /**
-   * Obtiene el rol del usuario a partir del token JWT.
-   */
-  getUserRole(): string { //
-    const token = this.getToken();
-    if (!token) return 'user';
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.rol_id === 1 ? 'admin' : 'user';
-    } catch {
-      return 'user';
-    }
-  }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router
+  ) {}
 
   getCurrentUserId(): number | null {
     const token = this.getToken();
     if (!token) return null;
 
     try {
+      // Extrae el payload del token
       const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.id;
-    } catch {
+    } catch (e) {
+      console.error('Error parsing token payload', e);
       return null;
     }
   }
+  
+  // Login (el backend debe devolver { token: string })
+  login(credentials: { email: string; password: string }): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.API_URL}/login`, credentials).pipe(
+      tap(response => this.saveToken(response.token))
+    );
+  }
+
+  // Registro
+  register(userData: { name: string; email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.API_URL}/register`, { ...userData, rol_id: 2 });
+  }
+
+  // Guardar token
+  private saveToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  // Obtener token
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  // Cerrar sesión
+  logout(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    this.router.navigate(['/login']);
+  }
+
+  // Verificar autenticación (solo chequea existencia del token)
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  // Obtener datos del usuario desde el token
+  getUserData(): { id: number; email: string; rol_id: number } | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      // Extrae el payload del token
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return {
+        id: payload.id,
+        email: payload.email,
+        rol_id: payload.rol_id
+      };
+    } catch (e) {
+      console.error('Error parsing token payload', e);
+      return null;
+    }
+  }
+
+  // Métodos convenientes
+  getUserId(): number | null {
+    return this.getUserData()?.id ?? null;
+  }
+
+  getUserRole(): number {
+    return this.getUserData()?.rol_id ?? 2; // Default to user role
+  }
+
+  // Método para verificar si el usuario es admin
+  esAdmin(): boolean {
+    return this.getUserRole() === 1; // Rol 1 es admin
+  }
 }
-// Este servicio maneja la autenticación del usuario, incluyendo login, registro y gestión de tokens JWT.
-// Se encarga de enviar solicitudes al backend y almacenar el token en localStorage.

@@ -18,7 +18,20 @@
                 <li class="nav-item" *ngIf="authService.isLoggedIn()">
                     <a class="nav-link"  (click)="logout()">Cerrar Sesión</a>
                 </li>
+                <li class="nav-item" *ngIf="authService.isLoggedIn()">
+                    <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item" *ngIf="authService.isLoggedIn() && authService.esAdmin()">
+                    <a class="nav-link" routerLink="/administrar-horarios">Administrar Horarios</a>
+                </li>
+                <li class="nav-item" *ngIf="authService.isLoggedIn()">
+                    <a class="nav-link" routerLink="/mis-turnos">Mis Turnos</a>
+                </li>
+                <li class="nav-item" *ngIf="authService.isLoggedIn()">
+                    <a class="nav-link" routerLink="/reservar-turno">Reservar Turno</a>
+                </li>
             </ul>
+
 
         </div>
     </div>

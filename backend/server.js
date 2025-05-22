@@ -24,8 +24,8 @@ app.get('/', (req, res) => {
 });
 
 // --- Rutas protegidas ---
-app.use('api/turnos', turnosRoutes); // /api/turnos requiere token
-app.use('api/horarios', horariosRoutes); // /api/horarios requiere token
+app.use('/api/turnos', turnosRoutes); // /api/turnos requiere token
+app.use('/api/horarios', horariosRoutes); // /api/horarios requiere token
 
 // Manejo de errores
 app.use((err, req, res, next) => {

@@ -8,6 +8,8 @@
       Cerrar Sesión
     </button>
   </div>
+  <!-- Botón para ir a Administrar Horarios (Solo Admin) -->
+
 
   <!-- Sección de Turnos -->
   <div class="card shadow-sm mb-4">
@@ -15,56 +17,85 @@
       <h5 class="mb-0">{{ esAdmin ? 'Todos los Turnos' : 'Próximos Turnos' }}</h5>
     </div>
     <div class="card-body">
-      @if (turnos.length === 0) {
-        <div class="alert alert-info">No hay turnos registrados</div>
-      } @else {
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Motivo</th>
-                @if (esAdmin) {
-                  <th>Usuario</th>
-                }
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (turno of turnos; track turno.id) {
-                <tr>
-                  <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ turno.hora_inicio }} - {{ turno.hora_fin }}</td>
-                  <td>{{ turno.motivo || 'Sin motivo' }}</td>
-                  @if (esAdmin) {
-                    <td>{{ turno.usuario_nombre }}</td>
-                  }
-                  <td>
-                    <button 
-                      (click)="cancelarTurno(turno.id)"
-                      class="btn btn-sm btn-outline-danger">
-                      Cancelar
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      }
+      <div *ngIf="turnos.length === 0" class="alert alert-info">
+        No hay turnos registrados
+      </div>
+      <div *ngIf="turnos.length > 0" class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Motivo</th>
+              <th *ngIf="esAdmin">Usuario</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let turno of turnos; trackBy: trackByTurnoId">
+              <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ turno.hora_inicio }} - {{ turno.hora_fin }}</td>
+              <td>{{ turno.motivo || 'Sin motivo' }}</td>
+              <td *ngIf="esAdmin">{{ turno.usuario_nombre }}</td>
+              <td>
+                <button 
+                  (click)="cancelarTurno(turno.id)"
+                  class="btn btn-sm btn-outline-danger">
+                  Cancelar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <!-- Sección de Horarios (Solo Admin) -->
-  @if (esAdmin) {
-    <div class="card shadow-sm">
-      <div class="card-header">
-        <h5 class="mb-0">Horarios Disponibles</h5>
-      </div>
-      <div class="card-body">
-        <!-- Implementar gestión de horarios aquí -->
-      </div>
+  <!-- <div *ngIf="esAdmin" class="card shadow-sm mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Horarios Disponibles</h5>
+      <button 
+        class="btn btn-sm btn-success"
+        (click)="mostrarFormularioHorario = !mostrarFormularioHorario">
+        {{ mostrarFormularioHorario ? 'Ocultar Formulario' : 'Agregar Disponibilidad' }}
+      </button>
     </div>
-  }
+
+    <div class="card-body" *ngIf="mostrarFormularioHorario">
+      <form (ngSubmit)="agregarHorario()">
+        <div class="mb-3">
+          <label for="fecha" class="form-label">Fecha</label>
+          <input 
+            type="date" 
+            id="fecha" 
+            [(ngModel)]="nuevoHorario.fecha" 
+            name="fecha" 
+            class="form-control" 
+            required />
+        </div>
+        <div class="mb-3">
+          <label for="horaInicio" class="form-label">Hora de Inicio</label>
+          <input 
+            type="time" 
+            id="horaInicio" 
+            [(ngModel)]="nuevoHorario.hora_inicio" 
+            name="horaInicio" 
+            class="form-control" 
+            required />
+        </div>
+        <div class="mb-3">
+          <label for="horaFin" class="form-label">Hora de Fin</label>
+          <input 
+            type="time" 
+            id="horaFin" 
+            [(ngModel)]="nuevoHorario.hora_fin" 
+            name="horaFin" 
+            class="form-control" 
+            required />
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Horario</button>
+      </form>
+    </div>
+  </div> -->
 </div>

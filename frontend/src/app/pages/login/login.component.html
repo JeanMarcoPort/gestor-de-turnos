@@ -36,13 +36,11 @@
       <div class="mt-3 text-center">
         <p class="text-muted">
           ¿No tienes una cuenta? 
-         <span
-            class="login-link text-primary text-decoration-none"
+         <button
+            type="button"
+            class="login-link text-primary text-decoration-none btn btn-link p-0"
             (click)="router.navigate(['/register'])"
-            (keydown.enter)="router.navigate(['/register'])"
-            tabindex="0"
-            role="button"
-          >Regístrate aquí</span>
+          >Regístrate aquí</button>
         </p>
       </div>
     </form>

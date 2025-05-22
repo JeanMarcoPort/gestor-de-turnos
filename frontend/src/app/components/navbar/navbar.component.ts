@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +11,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  constructor(public authService: AuthService, private router: Router) { }
+  constructor(public authService: AuthService, private readonly router: Router) { }
 
   logout(){
     this.authService.logout();
@@ -26,4 +25,21 @@ export class NavbarComponent {
   register(){
     this.router.navigate(['/register']);
   }
+
+  administrarHorarios(){
+    this.router.navigate(['/administrar-horarios']);
+  }
+
+  dashboard(){
+    this.router.navigate(['/dashboard']);
+  }
+  
+  reservarTurno(){
+    this.router.navigate(['/reservar-turno']);
+  }
+
+  misTurnos(){
+    this.router.navigate(['/mis-turnos']);
+  }
+  
 }

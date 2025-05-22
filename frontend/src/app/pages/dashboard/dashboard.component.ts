@@ -4,18 +4,30 @@ import { TurnosService } from '../../services/turnos.service';
 import { HorariosService } from '../../services/horarios.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
   turnos: any[] = [];
   horariosDisponibles: any[] = [];
-  esAdmin: boolean = false;
+  esAdmin: boolean = false; //false porque no es admin por defecto
+
+  // Variables para mostrar/ocultar formularios
+  mostrarFormularioHorario: boolean = false;
+  mostrarTurnos: boolean = true;
+  mostrarHorarios: boolean = false;
+
+  // trackBy para *ngFor
+  trackByTurnoId(index: number, turno: any): number {
+    return turno.id;
+  }
   
   // Objeto para el formulario de nuevo horario
   nuevoHorario: any = {
@@ -36,32 +48,37 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.cargarDatos();
-    this.esAdmin = this.authService.getUserRole() === 'admin';
+    this.esAdmin = String(this.authService.getUserRole()) === '1';
   }
 
-  cargarDatos() {
-    this.turnosService.getTurnos().subscribe({
-      next: (turnos) => {
-        this.turnos = turnos;
+  
+
+cargarDatos() {
+  this.turnosService.getTurnos().subscribe({
+    next: (turnos) => {
+      this.turnos = turnos;
+    },
+    error: (err) => {
+      console.error('Error cargando turnos:', err);
+      this.mensajeError = 'Error al cargar los turnos';
+    }
+  });
+
+  this.esAdmin = String(this.authService.getUserRole()) === '1';
+
+  if (this.esAdmin) {
+    const fechaHoy = new Date().toISOString().split('T')[0];
+    this.horariosService.getHorariosDisponibles(fechaHoy).subscribe({
+      next: (horarios) => {
+        this.horariosDisponibles = horarios;
       },
       error: (err) => {
-        console.error('Error cargando turnos:', err);
-        this.mensajeError = 'Error al cargar los turnos';
+        console.error('Error cargando horarios:', err);
+        this.mensajeError = 'Error al cargar los horarios disponibles';
       }
     });
-
-    if (this.esAdmin) {
-      this.horariosService.getHorariosDisponibles().subscribe({
-        next: (horarios) => {
-          this.horariosDisponibles = horarios;
-        },
-        error: (err) => {
-          console.error('Error cargando horarios:', err);
-          this.mensajeError = 'Error al cargar los horarios disponibles';
-        }
-      });
-    }
   }
+}
 
   cancelarTurno(id: number) {
     if (confirm('¿Estás seguro de cancelar este turno?')) {

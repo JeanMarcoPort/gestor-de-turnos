@@ -20,7 +20,7 @@ router.post('/', authMiddleware, async (req, res) => {
 
     // Crear turno 
     await db.execute(
-      `INSERT INTO turnos (usuario_id, horario_id, motivo) VALUES (?, ?, ?)`,
+      `INSERT INTO turnos (id_user_client, id_horario, motivo) VALUES (?, ?, ?)`,
       [req.user.id, horario_id, motivo || 'Consulta'] // Cambiamos el nombre de la tabla a "turnos"
     );
 
@@ -44,7 +44,7 @@ router.get('/', authMiddleware, async (req, res) => {
                 h.fecha, h.hora_inicio, h.hora_fin
          FROM turnos t
             JOIN horarios h ON t.horario_id = h.id
-            WHERE t.usuario_id = ?`,
+            WHERE t.user_id = ?`,
         [req.user.id] // Cambiamos el nombre de la tabla a "turnos"
     );
     res.json(turnos);

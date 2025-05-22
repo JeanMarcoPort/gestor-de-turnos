@@ -29,7 +29,7 @@ export class LoginComponent {
 
     this.authService.login(credentials).subscribe({ // Suscribimos al observable para recibir la respuesta
       // Si la respuesta es exitosa, guardamos el token y redirigimos
-      next: (res) => {
+      next: (res) => { //next es para manejar la respuesta exitosa
         // Guardamos el token y redirigimos al dashboard
         localStorage.setItem('token', res.token);
         this.router.navigate(['/dashboard']); // Redirigimos al dashboard
