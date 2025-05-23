@@ -6,6 +6,7 @@ import { ReservarTurnoComponent } from './pages/reservar-turno/reservar-turno.co
 import { AdministrarHorariosComponent } from './pages/administrar-horarios/administrar-horarios.component';
 import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin-guard.guard';
 
 
 export const routes: Routes = [
@@ -17,9 +18,9 @@ export const routes: Routes = [
 
   // Rutas protegidas con el guard
   // Si no está autenticado, lo redirige a la página de login
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }, 
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'administrar-horarios', component: AdministrarHorariosComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'reservar-turno', component: ReservarTurnoComponent, canActivate: [AuthGuard] },
-  { path: 'administrar-horarios', component: AdministrarHorariosComponent, canActivate: [AuthGuard] },
   { path: 'mis-turnos', component: MisTurnosComponent, canActivate: [AuthGuard] },
 
   // Ruta comodín para redirigir a la página de inicio si la ruta no existe

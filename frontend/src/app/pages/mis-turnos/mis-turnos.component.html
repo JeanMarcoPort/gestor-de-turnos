@@ -1,1 +1,56 @@
-<p>mis-turnos works!</p>
+<div class="container mt-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+      {{ esAdmin ? 'Panel de Administración' : 'Mis Turnos' }}
+    </h2>
+  </div>
+
+  <!-- Sección de Turnos -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">{{ esAdmin ? 'Todos los Turnos' : 'Mi Historial de Turnos' }}</h5>
+    </div>
+    <div class="card-body">
+      <div *ngIf="turnos.length === 0" class="alert alert-info">
+        No hay turnos registrados
+      </div>
+      <div *ngIf="turnos.length > 0" class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Motivo</th>
+              <th *ngIf="esAdmin">Usuario</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let turno of turnos; trackBy: trackByTurnoId">
+              <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ turno.hora_inicio }} - {{ turno.hora_fin }}</td>
+              <td>{{ turno.motivo || 'Sin motivo' }}</td>
+              <td *ngIf="esAdmin">{{ turno.user_name }}</td>
+              <td>
+                <span [ngClass]="{
+                  'badge bg-secondary': turno.estado === 'Pendiente',
+                  'badge bg-success': turno.estado === 'Confirmado',
+                  'badge bg-danger': turno.estado === 'Cancelado'
+                }">{{ turno.estado }}</span>
+              </td>
+              <td>
+                <button 
+                  (click)="cancelarTurno(turno.id)"
+                  class="btn btn-sm btn-outline-danger">
+                  Cancelar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -43,22 +43,21 @@
       <div class="mt-3 text-center">
         <p class="text-muted">
           ¿Ya tienes una cuenta?
-          <span
-            class="login-link text-primary text-decoration-none"
+          <button
+            type="button"
+            class="login-link text-primary text-decoration-none btn btn-link p-0"
             (click)="router.navigate(['/login'])"
-            (keydown.enter)="router.navigate(['/login'])"
-            tabindex="0"
-            role="button"
-          >Inicia sesión aquí</span>
+          >
+            Inicia sesión aquí
+          </button>
         </p>
 
       </div>
       <div *ngIf="successMessage" class="alert alert-primary mt-3">
         {{ successMessage }}
-
+      </div>
       <div *ngIf="errorMessage" class="alert alert-danger mt-3">
         {{ errorMessage }}
       </div>
-  </div>
     </form>
   </div>

@@ -6,31 +6,30 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navabr-collapse" id="navbarNav">
-
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item" *ngIf="!authService.isLoggedIn()">
-                    <a class="nav-link" (click)="login()">Iniciar Sesión</a>
-                </li>
-                <li class="nav-item" *ngIf="!authService.isLoggedIn()">
-                    <a class="nav-link"  (click)="register()">Registrarse</a>
-                </li>
-                <li class="nav-item" *ngIf="authService.isLoggedIn()">
-                    <a class="nav-link"  (click)="logout()">Cerrar Sesión</a>
-                </li>
-                <li class="nav-item" *ngIf="authService.isLoggedIn()">
-                    <a class="nav-link" routerLink="/dashboard">Dashboard</a>
-                </li>
-                <li class="nav-item" *ngIf="authService.isLoggedIn() && authService.esAdmin()">
-                    <a class="nav-link" routerLink="/administrar-horarios">Administrar Horarios</a>
-                </li>
-                <li class="nav-item" *ngIf="authService.isLoggedIn()">
-                    <a class="nav-link" routerLink="/mis-turnos">Mis Turnos</a>
-                </li>
-                <li class="nav-item" *ngIf="authService.isLoggedIn()">
-                    <a class="nav-link" routerLink="/reservar-turno">Reservar Turno</a>
-                </li>
-            </ul>
+        <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item" *ngIf="!authService.isLoggedIn()">
+            <button type="button" class="btn btn-outline-primary mx-1" [routerLink]="['/login']">Iniciar Sesión</button>
+        </li>
+        <li class="nav-item" *ngIf="!authService.isLoggedIn()">
+            <button type="button" class="btn btn-outline-success mx-1" [routerLink]="['/register']">Registrarse</button>
+        </li>
+        <li class="nav-item" *ngIf="authService.isLoggedIn()">
+            <button type="button" class="btn btn-outline-danger mx-1" (click)="logout()">Cerrar Sesión</button>
+        </li>
+        <li class="nav-item" *ngIf="authService.isLoggedIn() && authService.esAdmin()">
+            <button type="button" class="btn btn-outline-warning mx-1" [routerLink]="['/dashboard']">Dashboard</button>
+        </li>
+        <li class="nav-item" *ngIf="authService.isLoggedIn() && authService.esAdmin()">
+            <button type="button" class="btn btn-outline-info mx-1" [routerLink]="['/administrar-horarios']">Administrar Horarios</button>
+        </li>
+        <li class="nav-item" *ngIf="authService.isLoggedIn()">
+            <button type="button" class="btn btn-outline-secondary mx-1" [routerLink]="['/mis-turnos']">Mis Turnos</button>
+        </li>
+        <li class="nav-item" *ngIf="authService.isLoggedIn()">
+            <button type="button" class="btn btn-outline-primary mx-1" [routerLink]="['/reservar-turno']">Reservar Turno</button>
+        </li>
+    </ul>
 
 
         </div>

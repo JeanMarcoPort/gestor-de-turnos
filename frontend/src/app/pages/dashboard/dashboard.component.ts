@@ -127,4 +127,18 @@ cargarDatos() {
       }
     });
   }
+
+  cambiarEstado(turno: any) {
+  this.turnosService.cambiarEstado(turno.id, turno.estado).subscribe({
+    next: () => {
+      this.mensajeExito = 'Estado actualizado correctamente';
+      setTimeout(() => this.mensajeExito = '', 2000);
+    },
+    error: (err) => {
+      this.mensajeError = 'Error al actualizar el estado';
+      setTimeout(() => this.mensajeError = '', 2000);
+    }
+  });
+
+}
 }

@@ -5,12 +5,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-6">
-          <!-- Input para seleccionar fecha -->
           <label for="fecha" class="form-label">Selecciona una fecha:</label>
-         
-        <!-- Two-way binding con la propiedad selectedDate -->
-        <!-- Fecha mínima seleccionable: hoy -->
-        <!-- Validación HTML5 con required -->
           <input 
             type="date" 
             id="fecha" 
@@ -21,7 +16,6 @@
           >
         </div>
         <div class="col-md-6 d-flex align-items-end">
-          <!-- Botón que se deshabilita si no hay fecha seleccionada -->
           <button 
             (click)="loadAvailableSlots()" 
             class="btn btn-primary"
@@ -53,8 +47,8 @@
         </div>
       </div>
 
-      <!-- Mensaje cuando no hay horarios -->
-      <div *ngIf="availableSlots.length === 0 && selectedDate" class="alert alert-info mt-3">
+      <!-- Mensaje cuando no hay horarios, solo después de buscar -->
+      <div *ngIf="busquedaRealizada && availableSlots.length === 0 && selectedDate" class="alert alert-info mt-3">
         No hay horarios disponibles para esta fecha.
       </div>
     </div>

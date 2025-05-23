@@ -4,12 +4,8 @@
     <h2>
       {{ esAdmin ? 'Panel de Administración' : 'Mis Turnos' }}
     </h2>
-    <button (click)="authService.logout()" class="btn btn-outline-danger">
-      Cerrar Sesión
-    </button>
   </div>
   <!-- Botón para ir a Administrar Horarios (Solo Admin) -->
-
 
   <!-- Sección de Turnos -->
   <div class="card shadow-sm mb-4">
@@ -28,6 +24,7 @@
               <th>Hora</th>
               <th>Motivo</th>
               <th *ngIf="esAdmin">Usuario</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -36,13 +33,24 @@
               <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
               <td>{{ turno.hora_inicio }} - {{ turno.hora_fin }}</td>
               <td>{{ turno.motivo || 'Sin motivo' }}</td>
-              <td *ngIf="esAdmin">{{ turno.usuario_nombre }}</td>
+              <td *ngIf="esAdmin">{{ turno.user_name }}</td>
               <td>
-                <button 
-                  (click)="cancelarTurno(turno.id)"
-                  class="btn btn-sm btn-outline-danger">
-                  Cancelar
-                </button>
+                <span [ngClass]="{
+                  'badge bg-secondary': turno.estado === 'Pendiente',
+                  'badge bg-success': turno.estado === 'Confirmado',
+                  'badge bg-danger': turno.estado === 'Cancelado'
+                }">{{ turno.estado }}</span>
+              </td>
+              <td>
+                <ng-container *ngIf="esAdmin; else soloCancelar">
+                  <select [(ngModel)]="turno.estado" (change)="cambiarEstado(turno)" class="form-select form-select-sm w-auto d-inline-block me-2">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Confirmado">Confirmado</option>
+                    <option value="Cancelado">Cancelado</option>
+                  </select>
+                </ng-container>
+                <ng-template #soloCancelar></ng-template>
+                <button class="btn btn-danger btn-sm" (click)="cancelarTurno(turno.id)">Cancelar</button>
               </td>
             </tr>
           </tbody>
@@ -50,52 +58,4 @@
       </div>
     </div>
   </div>
-
-  <!-- Sección de Horarios (Solo Admin) -->
-  <!-- <div *ngIf="esAdmin" class="card shadow-sm mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Horarios Disponibles</h5>
-      <button 
-        class="btn btn-sm btn-success"
-        (click)="mostrarFormularioHorario = !mostrarFormularioHorario">
-        {{ mostrarFormularioHorario ? 'Ocultar Formulario' : 'Agregar Disponibilidad' }}
-      </button>
-    </div>
-
-    <div class="card-body" *ngIf="mostrarFormularioHorario">
-      <form (ngSubmit)="agregarHorario()">
-        <div class="mb-3">
-          <label for="fecha" class="form-label">Fecha</label>
-          <input 
-            type="date" 
-            id="fecha" 
-            [(ngModel)]="nuevoHorario.fecha" 
-            name="fecha" 
-            class="form-control" 
-            required />
-        </div>
-        <div class="mb-3">
-          <label for="horaInicio" class="form-label">Hora de Inicio</label>
-          <input 
-            type="time" 
-            id="horaInicio" 
-            [(ngModel)]="nuevoHorario.hora_inicio" 
-            name="horaInicio" 
-            class="form-control" 
-            required />
-        </div>
-        <div class="mb-3">
-          <label for="horaFin" class="form-label">Hora de Fin</label>
-          <input 
-            type="time" 
-            id="horaFin" 
-            [(ngModel)]="nuevoHorario.hora_fin" 
-            name="horaFin" 
-            class="form-control" 
-            required />
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar Horario</button>
-      </form>
-    </div>
-  </div> -->
 </div>

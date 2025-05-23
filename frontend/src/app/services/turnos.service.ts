@@ -1,28 +1,22 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TurnosService {
- getTurnos(): Observable<any[]> {
-  return this.api.get<any[]>('turnos');
-}
+  private readonly apiUrl = 'http://localhost:3000/api/turnos';
 
-  constructor(private readonly api: ApiService) {}
+  constructor(private readonly http: HttpClient) {}
 
-  reservarTurno(turnoData: { id_horario: number; motivo?: string }): Observable<any> {
-    return this.api.post('turnos', turnoData);
+  getTurnos(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
 
-  getTurnosUsuario(): Observable<any[]> {
-    return this.api.get<any[]>('turnos');
+  cambiarEstado(turnoId: number, estado: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${turnoId}/estado`, { estado });
   }
 
-  cambiarEstado(id_turno: number, estado: string): Observable<any> {
-    return this.api.put(`turnos/${id_turno}/estado`, { estado });
-  }
-
-  cancelarTurno(id_turno: number): Observable<any> {
-    return this.api.delete(`turnos/${id_turno}`);
+  cancelarTurno(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

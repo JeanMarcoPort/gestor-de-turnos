@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router'; //Importar cuando se usa RouterModule en el componente
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, FormsModule, RouterOutlet],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

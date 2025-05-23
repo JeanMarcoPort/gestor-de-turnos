@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'samuelito123';
+const SECRET_KEY = 'negocio123';
 
 // Middleware para verificar el rol del usuario
 // Este middleware verifica si el usuario tiene el rol requerido
