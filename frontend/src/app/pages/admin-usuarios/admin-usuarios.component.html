@@ -1,0 +1,85 @@
+<div class="admin-usuarios-bg">
+  <div class="container mt-4">
+    <h2>
+      <i class="bi bi-people-fill me-2"></i>
+      Administrar Usuarios
+    </h2>
+    
+  <form (ngSubmit)="crearUsuario()" class="mb-4 row g-2">
+    <div class="col">
+      <input [(ngModel)]="nuevoUsuario.name" name="name" class="form-control" placeholder="Nombre" required>
+    </div>
+    <div class="col">
+      <input [(ngModel)]="nuevoUsuario.email" name="email" class="form-control" placeholder="Email" required>
+    </div>
+    <div class="col">
+      <input [(ngModel)]="nuevoUsuario.password" name="password" type="password" class="form-control" placeholder="Contraseña" required>
+    </div>
+    <div class="col">
+      <select [(ngModel)]="nuevoUsuario.rol_id" name="rol_id" class="form-select">
+        <option [value]="1">Admin</option>
+        <option [value]="2">Usuario</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-success" type="submit">
+        <i class="bi bi-person-plus-fill me-1"></i>Crear Usuario
+      </button>
+    </div>
+  </form>
+
+  <table class="table table-hover align-middle">
+    <thead>
+      <tr>
+        <th><i class="bi bi-person me-1"></i>Nombre</th>
+        <th><i class="bi bi-envelope me-1"></i>Email</th>
+        <th><i class="bi bi-shield-lock me-1"></i>Rol</th>
+        <th><i class="bi bi-gear me-1"></i>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuarios">
+        <td *ngIf="editando?.id !== usuario.id">{{ usuario.name }}</td>
+        <td *ngIf="editando?.id === usuario.id">
+          <input [(ngModel)]="editando.name" class="form-control" />
+        </td>
+        <td *ngIf="editando?.id !== usuario.id">{{ usuario.email }}</td>
+        <td *ngIf="editando?.id === usuario.id">
+          <input [(ngModel)]="editando.email" class="form-control" />
+        </td>
+        <td>
+          <ng-container *ngIf="editando?.id === usuario.id; else verRol">
+            <select [(ngModel)]="editando.rol_id" class="form-select">
+              <option [value]="1">Admin</option>
+              <option [value]="2">Usuario</option>
+            </select>
+          </ng-container>
+          <ng-template #verRol>
+            <select [(ngModel)]="usuario.rol_id" (change)="onRolChange($event, usuario)" class="form-select" [disabled]="true">
+              <option [value]="1">Admin</option>
+              <option [value]="2">Usuario</option>
+            </select>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="editando?.id !== usuario.id">
+            <button class="btn btn-sm btn-primary me-1" (click)="editarUsuario(usuario)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="eliminarUsuario(usuario.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="editando?.id === usuario.id">
+            <button class="btn btn-sm btn-success me-1" (click)="guardarEdicion()">
+              <i class="bi bi-check-lg"></i>
+            </button>
+            <button class="btn btn-sm btn-secondary" (click)="cancelarEdicion()">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

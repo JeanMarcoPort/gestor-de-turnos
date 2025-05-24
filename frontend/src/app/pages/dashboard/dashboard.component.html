@@ -1,60 +1,89 @@
-<div class="container mt-4">
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>
-      {{ esAdmin ? 'Panel de Administración' : 'Mis Turnos' }}
-    </h2>
-  </div>
-  <!-- Botón para ir a Administrar Horarios (Solo Admin) -->
-
-  <!-- Sección de Turnos -->
-  <div class="card shadow-sm mb-4">
-    <div class="card-header">
-      <h5 class="mb-0">{{ esAdmin ? 'Todos los Turnos' : 'Próximos Turnos' }}</h5>
+<div class="dashboard-bg">
+  <div class="container mt-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>
+        <i class="bi bi-speedometer2 me-2"></i>
+        {{ esAdmin ? 'Panel de Administración - Turnos ' : 'Mis Turnos' }}
+      </h2>
     </div>
-    <div class="card-body">
-      <div *ngIf="turnos.length === 0" class="alert alert-info">
-        No hay turnos registrados
+
+    <!-- Sección de Turnos -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="bi bi-calendar-week me-2"></i>
+          {{ esAdmin ? 'Todos los Turnos' : 'Próximos Turnos' }}
+        </h5>
       </div>
-      <div *ngIf="turnos.length > 0" class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Hora</th>
-              <th>Motivo</th>
-              <th *ngIf="esAdmin">Usuario</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let turno of turnos; trackBy: trackByTurnoId">
-              <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
-              <td>{{ turno.hora_inicio }} - {{ turno.hora_fin }}</td>
-              <td>{{ turno.motivo || 'Sin motivo' }}</td>
-              <td *ngIf="esAdmin">{{ turno.user_name }}</td>
-              <td>
-                <span [ngClass]="{
-                  'badge bg-secondary': turno.estado === 'Pendiente',
-                  'badge bg-success': turno.estado === 'Confirmado',
-                  'badge bg-danger': turno.estado === 'Cancelado'
-                }">{{ turno.estado }}</span>
-              </td>
-              <td>
-                <ng-container *ngIf="esAdmin; else soloCancelar">
-                  <select [(ngModel)]="turno.estado" (change)="cambiarEstado(turno)" class="form-select form-select-sm w-auto d-inline-block me-2">
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Confirmado">Confirmado</option>
-                    <option value="Cancelado">Cancelado</option>
-                  </select>
-                </ng-container>
-                <ng-template #soloCancelar></ng-template>
-                <button class="btn btn-danger btn-sm" (click)="cancelarTurno(turno.id)">Cancelar</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card-body">
+        <div *ngIf="turnos.length === 0" class="alert alert-info">
+          <i class="bi bi-info-circle me-2"></i>
+          No hay turnos registrados
+        </div>
+        <div *ngIf="turnos.length > 0" class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th><i class="bi bi-calendar-date me-1"></i>Fecha</th>
+                <th><i class="bi bi-clock me-1"></i>Hora</th>
+                <th><i class="bi bi-chat-left-text me-1"></i>Motivo</th>
+                <th *ngIf="esAdmin"><i class="bi bi-person me-1"></i>Usuario</th>
+                <th><i class="bi bi-flag me-1"></i>Estado</th>
+                <th><i class="bi bi-gear me-1"></i>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let turno of turnos; trackBy: trackByTurnoId">
+                <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <i class="bi bi-clock-history me-1"></i>
+                  {{ turno.hora_inicio }} - {{ turno.hora_fin }}
+                </td>
+                <td>
+                  <i class="bi bi-chat-left-dots me-1"></i>
+                  {{ turno.motivo || 'Sin motivo' }}
+                </td>
+                <td *ngIf="esAdmin">
+                  <i class="bi bi-person-circle me-1"></i>
+                  {{ turno.user_name }}
+                </td>
+                <td>
+                  <span [ngClass]="{
+                    'badge bg-primary': turno.estado === 'Confirmado',
+                    'badge bg-secondary': turno.estado === 'Pendiente',
+                    'badge bg-success': turno.estado === 'Completado',
+                    'badge bg-danger': turno.estado === 'Cancelado'
+                  }">
+                    <i 
+                      [ngClass]="{
+                        'bi bi-check-circle-fill me-1': turno.estado === 'Confirmado',
+                        'bi bi-hourglass-split me-1': turno.estado === 'Pendiente',
+                        'bi bi-patch-check-fill me-1': turno.estado === 'Completado',
+                        'bi bi-x-circle-fill me-1': turno.estado === 'Cancelado'
+                      }">
+                    </i>
+                    {{ turno.estado }}
+                  </span>
+                </td>
+                <td>
+                  <ng-container *ngIf="esAdmin; else soloCancelar">
+                    <select [(ngModel)]="turno.estado" (change)="cambiarEstado(turno)" class="form-select form-select-sm w-auto d-inline-block me-2">
+                      <option value="Completado">Completado</option>
+                      <option value="Pendiente">Pendiente</option>
+                      <option value="Confirmado">Confirmado</option>
+                      <option value="Cancelado">Cancelado</option>
+                    </select>
+                  </ng-container>
+                  <ng-template #soloCancelar></ng-template>
+                  <button class="btn btn-danger btn-sm" (click)="cancelarTurno(turno.id)">
+                    <i class="bi bi-x-circle me-1"></i>Cancelar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

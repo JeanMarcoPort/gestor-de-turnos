@@ -1,40 +1,71 @@
-/* Centramos todo el contenido del login en la pantalla */
 .login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  background: #f8f9fa;
+  width: 100vw;
+  background: 
+    linear-gradient(rgba(255,255,255,0.93), rgba(255,255,255,0.93)),
+    url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Caja del formulario */
 .login-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 40px 32px 32px 32px;
+  min-width: 340px;
+  max-width: 380px;
   width: 100%;
-  max-width: 400px;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo para los títulos */
 .login-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #0d6efd;
+  letter-spacing: 1px;
   text-align: center;
-  color: #343a40;
 }
 
-/* Estilo para los botones */
+.form-label {
+  font-weight: 500;
+  color: #0d6efd;
+}
+
+.form-control {
+  border-radius: 12px;
+  font-size: 1.05em;
+}
+
 .btn-login {
-  width: 100%;
+  border-radius: 20px;
+  font-weight: 600;
+  padding: 0.6em 0;
+  font-size: 1.1em;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Mensaje de error */
-.error-message {
-  color: #dc3545;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-  text-align: center;
+.btn-login:hover {
+  background: #fff !important;
+  color: #0d6efd !important;
+  border: 1.5px solid #0d6efd;
+}
+
+.login-link {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.alert-danger {
+  border-radius: 12px;
+  font-size: 1em;
+  padding: 0.75em 1em;
+}
+
+@media (max-width: 500px) {
+  .login-card {
+    padding: 24px 8px;
+    min-width: unset;
+    max-width: 98vw;
+  }
 }

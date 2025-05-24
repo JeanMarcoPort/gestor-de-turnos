@@ -54,14 +54,14 @@ export class ReservarTurnoComponent {
     // Limpiamos mensajes previos
     this.appointmentService.reserveAppointment(appointment).subscribe({
       next: () => {
-        this.successMessage = '✅ Turno reservado con éxito!';
+        this.successMessage = 'Turno reservado con éxito!';
         this.errorMessage = '';
         this.busquedaRealizada = false;
         this.availableSlots = [];
         setTimeout(() => this.successMessage = '', 4000);// Oculta el mensaje después de 4 segundos
       },
       error: (err) => {
-        this.errorMessage = '❌ Error al reservar: ' + (err.error?.message ?? 'Intenta nuevamente');
+        this.errorMessage = 'Error al reservar: ' + (err.error?.message ?? 'Intenta nuevamente');
         this.successMessage = '';
       }
     });

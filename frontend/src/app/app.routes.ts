@@ -7,6 +7,7 @@ import { AdministrarHorariosComponent } from './pages/administrar-horarios/admin
 import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin-guard.guard';
+import { AdminUsuariosComponent } from './pages/admin-usuarios/admin-usuarios.component';
 
 
 export const routes: Routes = [
@@ -20,6 +21,7 @@ export const routes: Routes = [
   // Si no está autenticado, lo redirige a la página de login
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'administrar-horarios', component: AdministrarHorariosComponent, canActivate: [AuthGuard, AdminGuard] },
+  {path: 'admin-usuarios', component: AdminUsuariosComponent, canActivate: [AuthGuard, AdminGuard]},
   { path: 'reservar-turno', component: ReservarTurnoComponent, canActivate: [AuthGuard] },
   { path: 'mis-turnos', component: MisTurnosComponent, canActivate: [AuthGuard] },
 

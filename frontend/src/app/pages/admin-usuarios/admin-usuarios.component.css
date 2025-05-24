@@ -1,4 +1,4 @@
-.administrar-horarios-bg {
+.admin-usuarios-bg {
   min-height: 100vh;
   width: 100vw;
   background:
@@ -18,47 +18,12 @@
   margin-top: 32px;
 }
 
-/* ...el resto de tu CSS puede ir aquí... */
-.card {
-  border-radius: 16px;
-  border: none;
-  box-shadow: 0 2px 12px rgba(13,110,253,0.07);
-}
-
-.card-header {
-  background: linear-gradient(90deg, #0d6efd 60%, #6ea8fe 100%);
-  color: #fff;
-  border-radius: 16px 16px 0 0;
-  font-weight: 600;
+h2 {
+  font-weight: 700;
+  color: #0d6efd;
   letter-spacing: 1px;
 }
 
-.card-body {
-  background: #fff;
-  border-radius: 0 0 16px 16px;
-}
-
-/* Formulario */
-.form-label {
-  font-weight: 500;
-  color: #0d6efd;
-}
-
-.btn-primary {
-  border-radius: 20px;
-  font-weight: 500;
-  padding-left: 24px;
-  padding-right: 24px;
-  transition: background 0.2s, color 0.2s;
-}
-
-.btn-primary:hover {
-  background: #fff !important;
-  color: #0d6efd !important;
-  border: 1.5px solid #0d6efd;
-}
-
-/* Tabla */
 .table {
   background: #fff;
   border-radius: 12px;
@@ -78,27 +43,60 @@
   border-top: 1px solid #dee2e6;
 }
 
-/* Botón eliminar */
-.btn-danger.btn-sm {
+.btn {
   border-radius: 20px;
   font-weight: 500;
-  padding: 0.3em 1.2em;
   transition: background 0.2s, color 0.2s;
 }
 
-.btn-danger.btn-sm:hover {
+.btn-primary {
+  background: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #fff !important;
+  color: #0d6efd !important;
+  border: 1.5px solid #0d6efd;
+}
+
+.btn-danger {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+}
+.btn-danger:hover {
   background: #fff !important;
   color: #dc3545 !important;
   border: 1.5px solid #dc3545;
+}
+
+.btn-success {
+  background: #198754;
+  border-color: #198754;
+  color: #fff;
+}
+.btn-success:hover {
+  background: #fff !important;
+  color: #198754 !important;
+  border: 1.5px solid #198754;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+}
+.btn-secondary:hover {
+  background: #fff !important;
+  color: #6c757d !important;
+  border: 1.5px solid #6c757d;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .container {
     padding: 12px 2px;
-  }
-  .card-header, .card-body {
-    padding: 12px;
   }
   .table th, .table td {
     font-size: 0.95em;

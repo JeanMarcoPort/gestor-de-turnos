@@ -29,7 +29,7 @@ export class AdministrarHorariosComponent implements OnInit {
   }
 
   cargarHorarios() {
-    this.horariosService.getHorariosNegocio().subscribe({
+    this.horariosService.getTodosHorariosDisponibles().subscribe({
       next: (data) => this.horarios = data,
       error: (err) => console.error(err)
     });

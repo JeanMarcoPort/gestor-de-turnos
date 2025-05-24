@@ -1,0 +1,108 @@
+.dashboard-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background:
+    linear-gradient(rgba(255,255,255,0.93), rgba(255,255,255,0.93)),
+    url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background: #f8f9fae6;
+  border-radius: 18px;
+  padding: 32px 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  margin-top: 32px;
+}
+
+/* Títulos */
+h2, h5 {
+  font-weight: 700;
+  color: #0d6efd;
+  letter-spacing: 1px;
+}
+
+/* Card de turnos */
+.card {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 2px 12px rgba(13,110,253,0.07);
+}
+
+.card-header {
+  background: linear-gradient(90deg, #0d6efd 60%, #6ea8fe 100%);
+  color: #fff;
+  border-radius: 16px 16px 0 0;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.card-body {
+  background: #fff;
+  border-radius: 0 0 16px 16px;
+}
+
+/* Tabla de turnos */
+.table {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.table th {
+  background: #e9ecef;
+  color: #495057;
+  font-weight: 600;
+  border: none;
+}
+
+.table td {
+  vertical-align: middle;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Badges de estado */
+.badge {
+  font-size: 1em;
+  padding: 0.5em 1em;
+  border-radius: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.badge.bg-primary    { background: #0d6efd !important; }
+.badge.bg-secondary  { background: #6c757d !important; }
+.badge.bg-success    { background: #198754 !important; }
+.badge.bg-danger     { background: #dc3545 !important; }
+
+/* Botón cancelar */
+.btn-danger.btn-sm {
+  border-radius: 20px;
+  font-weight: 500;
+  padding: 0.3em 1.2em;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-danger.btn-sm:hover {
+  background: #fff !important;
+  color: #dc3545 !important;
+  border: 1.5px solid #dc3545;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 12px 2px;
+  }
+  .card-header, .card-body {
+    padding: 12px;
+  }
+  .table th, .table td {
+    font-size: 0.95em;
+    padding: 0.5em;
+  }
+}

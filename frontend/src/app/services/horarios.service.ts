@@ -8,11 +8,16 @@ export class HorariosService {
   return this.api.delete(`horarios/${id}`);
 }
 
-  constructor(private api: ApiService) {}
+  constructor(private readonly api: ApiService) {}
 
   getHorariosDisponibles(fecha: string): Observable<any[]> {
     return this.api.get<any[]>(`horarios?fecha=${fecha}`);
   }
+
+  //Para obtener todos los horarios disponibles
+  getTodosHorariosDisponibles(): Observable<any[]> {
+  return this.api.get<any[]>(`horarios/disponibles`);
+}
 
   crearHorario(horarioData: { fecha: string; hora_inicio: string; hora_fin: string }): Observable<any> {
     return this.api.post('horarios', horarioData);
