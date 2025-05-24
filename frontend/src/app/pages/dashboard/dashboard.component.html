@@ -30,6 +30,7 @@
                 <th><i class="bi bi-chat-left-text me-1"></i>Motivo</th>
                 <th *ngIf="esAdmin"><i class="bi bi-person me-1"></i>Usuario</th>
                 <th><i class="bi bi-flag me-1"></i>Estado</th>
+                <th><i class="bi bi-chat-left-quote me-1"></i>Comentario admin</th>
                 <th><i class="bi bi-gear me-1"></i>Acciones</th>
               </tr>
             </thead>
@@ -64,6 +65,24 @@
                       }">
                     </i>
                     {{ turno.estado }}
+                  </span>
+                </td>
+                <!-- Comentario admin -->
+                <td>
+                  <span *ngIf="!esAdmin || editandoComentarioId !== turno.id">
+                    {{ turno.comentario_admin || '-' }}
+                    <button *ngIf="esAdmin" class="btn btn-link btn-sm p-0 ms-2" (click)="editarComentario(turno)">
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                  </span>
+                  <span *ngIf="esAdmin && editandoComentarioId === turno.id">
+                    <input [(ngModel)]="comentarioAdminEdit" class="form-control form-control-sm d-inline w-auto" maxlength="255" />
+                    <button class="btn btn-success btn-sm ms-1" (click)="guardarComentario(turno)">
+                      <i class="bi bi-check-lg"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm ms-1" (click)="cancelarComentario()">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
                   </span>
                 </td>
                 <td>

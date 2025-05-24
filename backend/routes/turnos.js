@@ -81,7 +81,7 @@ router.get('/', authMiddleware, async (req, res) => {
     let query = `
       SELECT t.id, t.motivo, t.reservado_en, t.estado,
              h.fecha, h.hora_inicio, h.hora_fin,
-             t.user_id, u.name AS user_name
+             t.user_id, u.name AS user_name, t.comentario_admin
       FROM turnos t
       JOIN horarios h ON t.horario_id = h.id_horario
       JOIN users u ON t.user_id = u.id
@@ -115,6 +115,26 @@ router.get('/', authMiddleware, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Cambiar comentario admin de un turno (solo admin)
+router.patch('/:id/comentario', authMiddleware, async (req, res) => {
+  try {
+    // Solo admin puede cambiar comentario
+    if (req.user.rol_id !== 1) {
+      return res.status(403).json({ message: 'No autorizado' });
+    }
+    const turnoId = req.params.id;
+    const { comentario_admin } = req.body;
+    await db.execute(
+      `UPDATE turnos SET comentario_admin = ? WHERE id = ?`,
+      [comentario_admin, turnoId]
+    );
+    res.json({ success: true, message: 'Comentario actualizado' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 });
 

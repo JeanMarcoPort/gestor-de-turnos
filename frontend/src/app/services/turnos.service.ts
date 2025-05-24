@@ -19,4 +19,9 @@ export class TurnosService {
   cancelarTurno(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  //Crear comentario 
+  cambiarComentario(id: number, comentario: string) {
+  return this.http.patch(`${this.apiUrl}/${id}/comentario`, { comentario_admin: comentario });
+}
 }

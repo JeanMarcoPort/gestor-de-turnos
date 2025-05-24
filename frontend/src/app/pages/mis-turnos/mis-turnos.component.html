@@ -30,6 +30,7 @@
                 <th><i class="bi bi-chat-left-text me-1"></i>Motivo</th>
                 <th *ngIf="esAdmin"><i class="bi bi-person me-1"></i>Usuario</th>
                 <th><i class="bi bi-flag me-1"></i>Estado</th>
+                <th><i class="bi bi-chat-left-quote me-1"></i>Comentario admin</th>
                 <th><i class="bi bi-gear me-1"></i>Acciones</th>
               </tr>
             </thead>
@@ -63,6 +64,11 @@
                     </i>
                     {{ turno.estado }}
                   </span>
+                </td>
+                <!-- Nueva columna: Comentario admin -->
+                <td>
+                  <i class="bi bi-chat-left-quote me-1"></i>
+                  {{ turno.comentario_admin || '-' }}
                 </td>
                 <td>
                   <button 

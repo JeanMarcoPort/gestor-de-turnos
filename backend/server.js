@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const authMiddleware = require('./middleware/auth');
 const turnosRoutes = require('./routes/turnos'); // Importar rutas de turnos
 const horariosRoutes = require('./routes/horarios'); // Importar rutas de horarios
+const usuariosRoutes = require('./routes/usuarios'); // Importar rutas de usuarios
 
 const app = express();
 const port = 3000;
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 // --- Rutas protegidas ---
 app.use('/api/turnos', turnosRoutes); // /api/turnos requiere token
 app.use('/api/horarios', horariosRoutes); // /api/horarios requiere token
+app.use('/api/usuarios', usuariosRoutes); // /api/usuarios requiere token
 
 // Manejo de errores
 app.use((err, req, res, next) => {

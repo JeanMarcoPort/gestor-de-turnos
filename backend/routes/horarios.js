@@ -23,6 +23,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+//Obtener todos los hoarios (solo admin)
+router.get('/disponibles', authMiddleware, checkRole(1), async (req, res) => {
+    try {
+        const [horarios] = await db.execute(
+            `SELECT * FROM horarios WHERE disponible = TRUE`
+        );
+        res.json(horarios);
+    } catch (error) {
+        console.error('Error obteniendo horarios disponibles:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Crear nuevo horario (solo admin)
 router.post('/', authMiddleware, checkRole(1), async (req, res) => {
     try {
@@ -41,6 +54,21 @@ router.post('/', authMiddleware, checkRole(1), async (req, res) => {
         });
     } catch (error) {
         console.error('Error creando horario:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//Para eliminar un horario (solo admin)
+router.delete('/:id', authMiddleware, checkRole(1), async (req, res) => {
+    try {
+        const horarioId = req.params.id;
+        await db.execute(
+            `DELETE FROM horarios WHERE id_horario = ?`,
+            [horarioId]
+        );
+        res.json({ success: true, message: 'Horario eliminado' });
+    } catch (error) {
+        console.error('Error eliminando horario:', error);
         res.status(500).json({ error: error.message });
     }
 });
